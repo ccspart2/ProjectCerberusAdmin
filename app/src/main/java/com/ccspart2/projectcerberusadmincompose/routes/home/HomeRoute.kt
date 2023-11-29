@@ -2,6 +2,7 @@ package com.ccspart2.projectcerberusadmincompose.routes.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,17 +21,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ccspart2.projectcerberusadmincompose.R
+import com.ccspart2.projectcerberusadmincompose.core.navigation.Screen
 import com.ccspart2.projectcerberusadmincompose.core.ui.preview.PreviewScreen
 
 @Composable
 fun HomeRoute(
     navController: NavController,
 ) {
-    HomeScreen()
+    HomeScreen(
+        onEmployeesClick = {
+            navController.navigate(Screen.Employees.route)
+        },
+    )
 }
 
 @Composable
-private fun HomeScreen() {
+private fun HomeScreen(
+    onEmployeesClick: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,6 +71,9 @@ private fun HomeScreen() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.clickable {
+                    onEmployeesClick()
+                },
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_people_alt_24),
@@ -79,6 +90,8 @@ private fun HomeScreen() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.clickable {
+                },
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_calendar_month_24),
@@ -95,6 +108,8 @@ private fun HomeScreen() {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.clickable {
+                },
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_place_24),
@@ -116,6 +131,8 @@ private fun HomeScreen() {
 @Composable
 private fun HomeScreenPreview() {
     PreviewScreen {
-        HomeScreen()
+        HomeScreen(
+            onEmployeesClick = {},
+        )
     }
 }
