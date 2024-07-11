@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.core.ui.components.topbars
+package com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -17,20 +17,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ccspart2.projectcerberusadmincompose.R
-import com.ccspart2.projectcerberusadmincompose.core.ui.preview.PreviewScreen
+import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
 
 @Composable
 fun MainTopBar(
     title: String,
     actionImageResource: Int,
-    onActionClick: () -> Unit,
+    onActionClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .padding(25.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(id = actionImageResource),
@@ -40,17 +40,17 @@ fun MainTopBar(
                 .clickable {
                     onActionClick()
                 },
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.primary
         )
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleLarge
         )
         Image(
             painter = painterResource(id = R.drawable.cerberus_logo_color),
             contentDescription = "",
             modifier = Modifier
-                .size(200.dp),
+                .size(200.dp)
         )
     }
 }
@@ -62,7 +62,7 @@ private fun MainTopBarPreview() {
         MainTopBar(
             title = "Employees",
             actionImageResource = R.drawable.outline_place_24,
-            onActionClick = {},
+            onActionClick = {}
         )
     }
 }

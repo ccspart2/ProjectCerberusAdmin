@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.routes.home
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,41 +21,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ccspart2.projectcerberusadmincompose.R
-import com.ccspart2.projectcerberusadmincompose.core.navigation.Screen
-import com.ccspart2.projectcerberusadmincompose.core.ui.preview.PreviewScreen
+import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Screen
+import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
 
 @Composable
 fun HomeRoute(
-    navController: NavController,
+    navController: NavController
 ) {
     HomeScreen(
         onEmployeesClick = {
             navController.navigate(Screen.Employees.route)
-        },
+        }
     )
 }
 
 @Composable
 private fun HomeScreen(
-    onEmployeesClick: () -> Unit,
+    onEmployeesClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(25.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.cerberus_logo_color),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(200.dp),
+                    .size(200.dp)
             )
         }
         Row(
@@ -63,64 +63,64 @@ private fun HomeScreen(
                 .fillMaxWidth()
                 .padding(
                     vertical = 20.dp,
-                    horizontal = 100.dp,
+                    horizontal = 100.dp
                 ),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.clickable {
                     onEmployeesClick()
-                },
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_people_alt_24),
                     contentDescription = "",
                     modifier = Modifier
                         .size(150.dp),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = "Employees",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.clickable {
-                },
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_calendar_month_24),
                     contentDescription = "",
                     modifier = Modifier
                         .size(150.dp),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = "Events",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.clickable {
-                },
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.outline_place_24),
                     contentDescription = "",
                     modifier = Modifier
                         .size(150.dp),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = "Locations",
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
         }
@@ -132,7 +132,7 @@ private fun HomeScreen(
 private fun HomeScreenPreview() {
     PreviewScreen {
         HomeScreen(
-            onEmployeesClick = {},
+            onEmployeesClick = {}
         )
     }
 }
