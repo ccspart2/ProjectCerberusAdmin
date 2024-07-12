@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ccspart2.projectcerberusadmincompose.R
 import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Screen
@@ -28,6 +29,8 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.Pre
 fun HomeRoute(
     navController: NavController
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
+
     HomeScreen(
         onEmployeesClick = {
             navController.navigate(Screen.Employees.route)
