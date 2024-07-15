@@ -3,7 +3,9 @@ package com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +24,7 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.Pre
 @Composable
 fun MainTopBar(
     title: String,
-    actionImageResource: Int,
+    actionImageResource: Int?,
     onActionClick: () -> Unit
 ) {
     Row(
@@ -32,36 +34,59 @@ fun MainTopBar(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = actionImageResource),
-            contentDescription = "",
-            modifier = Modifier
-                .size(150.dp)
-                .clickable {
-                    onActionClick()
-                },
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge
-        )
+        if (actionImageResource != null) {
+            Icon(
+                painter = painterResource(id = actionImageResource),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(150.dp)
+                    .clickable {
+                        onActionClick()
+                    },
+                tint = MaterialTheme.colorScheme.primary
+            )
+        } else {
+            Spacer(modifier = Modifier.size(150.dp))
+        }
+
+        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+
         Image(
             painter = painterResource(id = R.drawable.cerberus_logo_color),
-            contentDescription = "",
+            contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
         )
     }
 }
 
-@Preview(widthDp = 1024, heightDp = 600)
+
+
+@Preview(widthDp = 1024, heightDp = 200)
 @Composable
 private fun MainTopBarPreview() {
     PreviewScreen {
         MainTopBar(
             title = "Employees",
             actionImageResource = R.drawable.outline_place_24,
+            onActionClick = {}
+        )
+    }
+}
+
+@Preview(widthDp = 1024, heightDp = 200)
+@Composable
+private fun MainTopBarPreviewWithoutActionIcon() {
+    PreviewScreen {
+        MainTopBar(
+            title = "Employees",
+            actionImageResource = null,
             onActionClick = {}
         )
     }
