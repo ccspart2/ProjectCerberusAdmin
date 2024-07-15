@@ -24,12 +24,13 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.Pre
 @Composable
 fun MainTopBar(
     title: String,
-    actionImageResource: Int?,
-    onActionClick: () -> Unit
+    onActionClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    actionImageResource: Int? = null,
 ) {
     Row(
-        modifier = Modifier
-            .padding(25.dp)
+        modifier = modifier
+            .padding(horizontal = 25.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
