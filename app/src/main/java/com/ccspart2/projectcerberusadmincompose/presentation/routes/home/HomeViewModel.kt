@@ -25,13 +25,13 @@ class HomeViewModel @Inject constructor(
     val data: StateFlow<List<FirestoreModel>> get() = _data
 
     init {
-        LogUtils.info("Entro!!")
-
-        viewModelScope.launch {
-            getDataUseCase().collect { list ->
-                _data.value = list
-            }
-        }
+//        LogUtils.info("Entro!!")
+//
+//        viewModelScope.launch {
+//            getDataUseCase().collect { list ->
+//                _data.value = list
+//            }
+//        }
 
 //        viewModelScope.launch {
 //            addDataUseCase(

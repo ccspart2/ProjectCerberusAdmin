@@ -33,7 +33,7 @@ fun HomeRoute(
 
     HomeScreen(
         onEmployeesClick = {
-            navController.navigate(Screen.Employees.route)
+            navController.navigate(Screen.SeeAllEmployees.route)
         }
     )
 }

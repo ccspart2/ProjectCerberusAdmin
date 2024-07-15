@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.seeAllEmployees
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,18 +7,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.ccspart2.projectcerberusadmincompose.R
+import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Screen
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
 
 @Composable
-fun EmployeesRoute(
-    navController: NavController
-) {
-    EmployeesScreen()
+fun SeeAllEmployeesRoute(navController: NavController){
+
+    SeeAllEmployeesScreen(
+        onAddEmployeeClick = {
+            navController.navigate(Screen.AddNewEmployee.route)
+        }
+    )
+
 }
 
 @Composable
-private fun EmployeesScreen() {
+private fun SeeAllEmployeesScreen(
+    onAddEmployeeClick: () -> Unit
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,15 +33,18 @@ private fun EmployeesScreen() {
         MainTopBar(
             title = "Employees",
             actionImageResource = R.drawable.baseline_person_add_alt_24,
-            onActionClick = {}
+            onActionClick = onAddEmployeeClick
         )
     }
+
 }
 
-@Preview(widthDp = 1024, heightDp = 600)
 @Composable
-private fun EmployeesRoutePreview() {
+@Preview(widthDp = 1024, heightDp = 600, showBackground = true)
+private fun SeeAllEmployeesScreenPreview(){
     PreviewScreen {
-        EmployeesScreen()
+        SeeAllEmployeesScreen(
+            onAddEmployeeClick = {}
+        )
     }
 }
