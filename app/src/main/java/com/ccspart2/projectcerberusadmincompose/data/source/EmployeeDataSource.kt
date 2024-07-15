@@ -1,6 +1,6 @@
 package com.ccspart2.projectcerberusadmincompose.data.source
 
-import com.ccspart2.projectcerberusadmincompose.data.model.FirestoreModel
+import com.ccspart2.projectcerberusadmincompose.data.model.Employee
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
@@ -10,29 +10,28 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-// data/source/FirestoreDataSource.kt
-interface FirestoreDataSource {
-    fun getData(): Flow<List<FirestoreModel>>
-    suspend fun addData(model: FirestoreModel)
+interface EmployeeDataSource {
+    fun getData(): Flow<List<Employee>>
+    suspend fun addData(model: Employee)
 }
 
-class FirestoreDataSourceImpl @Inject constructor(
+class EmployeeDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore
-) : FirestoreDataSource {
+) : EmployeeDataSource {
 
-    override fun getData(): Flow<List<FirestoreModel>> = flow {
-        val snapshot = firestore.collection("demo")
+    override fun getData(): Flow<List<Employee>> = flow {
+        val snapshot = firestore.collection("employees")
             .get()
             .await()
         val data = snapshot.documents.map { document ->
-            document.toObject(FirestoreModel::class.java)!!
+            document.toObject(Employee::class.java)!!
         }
         emit(data)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun addData(model: FirestoreModel) {
+    override suspend fun addData(model: Employee) {
         withContext(Dispatchers.IO) {
-            firestore.collection("demo")
+            firestore.collection("employees")
                 .add(model)
                 .await()
         }

@@ -1,11 +1,10 @@
 package com.ccspart2.projectcerberusadmincompose.di
 
-import com.ccspart2.projectcerberusadmincompose.data.repository.FirestoreRepository
-import com.ccspart2.projectcerberusadmincompose.data.repository.FirestoreRepositoryImpl
-import com.ccspart2.projectcerberusadmincompose.data.source.FirestoreDataSource
-import com.ccspart2.projectcerberusadmincompose.data.source.FirestoreDataSourceImpl
-import com.ccspart2.projectcerberusadmincompose.domain.AddDataUseCase
-import com.ccspart2.projectcerberusadmincompose.domain.GetDataUseCase
+import com.ccspart2.projectcerberusadmincompose.data.repository.EmployeeRepositoryImpl
+import com.ccspart2.projectcerberusadmincompose.data.repository.EmployeesRepository
+import com.ccspart2.projectcerberusadmincompose.data.source.EmployeeDataSource
+import com.ccspart2.projectcerberusadmincompose.data.source.EmployeeDataSourceImpl
+import com.ccspart2.projectcerberusadmincompose.domain.EmployeesUseCases
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -24,31 +23,25 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideFirestoreDataSource(
+    fun provideEmployeeDataSource(
         firestore: FirebaseFirestore
-    ): FirestoreDataSource {
-        return FirestoreDataSourceImpl(firestore)
+    ): EmployeeDataSource {
+        return EmployeeDataSourceImpl(firestore)
     }
 
     @Provides
     @Singleton
-    fun provideFirestoreRepository(
-        dataSource: FirestoreDataSource
-    ): FirestoreRepository {
-        return FirestoreRepositoryImpl(dataSource)
+    fun provideEmployeeRepository(
+        dataSource: EmployeeDataSource
+    ): EmployeesRepository {
+        return EmployeeRepositoryImpl(dataSource)
     }
 
     @Provides
     @Singleton
-    fun provideGetDataUseCase(
-        repository: FirestoreRepository
-    ): GetDataUseCase {
-        return GetDataUseCase(repository)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAddDataUseCase(repository: FirestoreRepository): AddDataUseCase {
-        return AddDataUseCase(repository)
+    fun provideEmployeesUseCases(
+        repository: EmployeesRepository
+    ): EmployeesUseCases {
+        return EmployeesUseCases(repository)
     }
 }
