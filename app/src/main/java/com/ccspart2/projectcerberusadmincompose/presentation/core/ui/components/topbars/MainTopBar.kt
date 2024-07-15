@@ -23,9 +23,9 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.Pre
 
 @Composable
 fun MainTopBar(
-    title: String,
-    onActionClick: () -> Unit,
     modifier: Modifier = Modifier,
+    title: String = "",
+    onActionClick: () -> Unit = {},
     actionImageResource: Int? = null,
 ) {
     Row(
