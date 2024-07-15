@@ -21,30 +21,52 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
-import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
-import androidx.compose.runtime.*
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
+import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun AddNewEmployeeRoute(navController: NavController){
-    AddNewEmployeeScreen()
+fun AddNewEmployeeRoute(navController: NavController) {
+    val viewModel: AddNewEmployeeViewModel = hiltViewModel()
+    AddNewEmployeeScreen(
+        viewModelState = viewModel.viewState,
+        onSaveButtonClicked = { firstName, lastName, phoneNumber, email, isAdmin ->
+            viewModel.handleEvent(
+                AddNewEmployeeEvent.onSaveButtonClicked(
+                    firstName = firstName,
+                    lastName = lastName,
+                    phoneNumber = phoneNumber,
+                    email = email,
+                    isAdmin = isAdmin
+                )
+            )
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNewEmployeeScreen(){
+fun AddNewEmployeeScreen(
+    viewModelState: StateFlow<AddNewEmployeeState>,
+    onSaveButtonClicked: (String, String, String, String, Boolean) -> Unit
+) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
@@ -64,7 +86,7 @@ fun AddNewEmployeeScreen(){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .imePadding(),
+            .imePadding()
 
     ) {
         MainTopBar(
@@ -77,7 +99,6 @@ fun AddNewEmployeeScreen(){
                 .fillMaxWidth()
                 .padding(horizontal = 25.dp)
         ) {
-
             Text(text = "First Name", style = MaterialTheme.typography.labelMedium)
             OutlinedTextField(
                 value = firstName,
@@ -121,7 +142,8 @@ fun AddNewEmployeeScreen(){
             Spacer(modifier = Modifier.height(8.dp))
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(20.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -134,8 +156,15 @@ fun AddNewEmployeeScreen(){
                 Text(text = "Admin")
             }
             Button(
-                onClick = {
-                    // Handle form submission
+                onClick =
+                {
+                    onSaveButtonClicked(
+                        firstName,
+                        lastName,
+                        phoneNumber,
+                        email,
+                        isAdmin
+                    )
                 },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
@@ -147,8 +176,11 @@ fun AddNewEmployeeScreen(){
 
 @Composable
 @Preview(widthDp = 1024, heightDp = 800, showBackground = true)
-fun AddNewEmployeeScreenPreview(){
+fun AddNewEmployeeScreenPreview() {
     PreviewScreen {
-        AddNewEmployeeScreen()
+        AddNewEmployeeScreen(
+            viewModelState = MutableStateFlow(AddNewEmployeeState()),
+            onSaveButtonClicked = { _, _, _, _, _ -> }
+        )
     }
 }
