@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,10 +49,10 @@ import kotlinx.coroutines.launch
 fun AddNewEmployeeRoute(navController: NavController) {
     val viewModel: AddNewEmployeeViewModel = hiltViewModel()
     AddNewEmployeeScreen(
-        viewModelState = viewModel.viewState,
+        viewStateFlow = viewModel.viewState,
         onSaveButtonClicked = { firstName, lastName, phoneNumber, email, isAdmin ->
             viewModel.handleEvent(
-                AddNewEmployeeEvent.onSaveButtonClicked(
+                AddNewEmployeeEvent.OnSaveButtonClicked(
                     firstName = firstName,
                     lastName = lastName,
                     phoneNumber = phoneNumber,
@@ -57,15 +60,20 @@ fun AddNewEmployeeRoute(navController: NavController) {
                     isAdmin = isAdmin
                 )
             )
+        },
+        onDismissAlertDialog = {
+            navController.popBackStack()
         }
+
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddNewEmployeeScreen(
-    viewModelState: StateFlow<AddNewEmployeeState>,
-    onSaveButtonClicked: (String, String, String, String, Boolean) -> Unit
+    viewStateFlow: StateFlow<AddNewEmployeeState>,
+    onSaveButtonClicked: (String, String, String, String, Boolean) -> Unit,
+    onDismissAlertDialog: () -> Unit
 ) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -76,6 +84,8 @@ fun AddNewEmployeeScreen(
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
+
+    val viewState by viewStateFlow.collectAsState()
 
     LaunchedEffect(key1 = keyboardHeight) {
         coroutineScope.launch {
@@ -94,81 +104,127 @@ fun AddNewEmployeeScreen(
             onActionClick = {}
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 25.dp)
-        ) {
-            Text(text = "First Name", style = MaterialTheme.typography.labelMedium)
-            OutlinedTextField(
-                value = firstName,
-                onValueChange = { firstName = it },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = "Last Name", style = MaterialTheme.typography.labelMedium)
-            OutlinedTextField(
-                value = lastName,
-                onValueChange = { lastName = it },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = "Phone Number", style = MaterialTheme.typography.labelMedium)
-            OutlinedTextField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Phone,
-                    imeAction = ImeAction.Next
+        when (viewState.employeeUploadState) {
+            EmployeeUploadState.SUCCESS -> {
+                AlertDialog(
+                    title = {
+                        Text(text = "Employee Created")
+                    },
+                    text = {
+                        Text(
+                            text = "$firstName $lastName  has been added to the Database. "
+                        )
+                    },
+                    onDismissRequest = onDismissAlertDialog,
+                    confirmButton = {
+                        TextButton(
+                            onClick = onDismissAlertDialog
+                        ) {
+                            Text("Ok")
+                        }
+                    }
                 )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = "Email", style = MaterialTheme.typography.labelMedium)
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                )
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Switch(
-                    checked = isAdmin,
-                    onCheckedChange = { isAdmin = it },
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-                Text(text = "Admin")
             }
-            Button(
-                onClick =
-                {
-                    onSaveButtonClicked(
-                        firstName,
-                        lastName,
-                        phoneNumber,
-                        email,
-                        isAdmin
+            EmployeeUploadState.ERROR -> {
+                AlertDialog(
+                    title = {
+                        Text(text = "Error")
+                    },
+                    text = {
+                        Text(
+                            text = "There was an error creating the Employee. " +
+                                "Please try again later."
+                        )
+                    },
+                    onDismissRequest = onDismissAlertDialog,
+                    confirmButton = {
+                        TextButton(
+                            onClick = onDismissAlertDialog
+                        ) {
+                            Text("Ok")
+                        }
+                    }
+                )
+            }
+
+            EmployeeUploadState.PENDING -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 25.dp)
+                ) {
+                    Text(text = "First Name", style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = firstName,
+                        onValueChange = { firstName = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
                     )
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text("Submit")
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(text = "Last Name", style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = lastName,
+                        onValueChange = { lastName = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(text = "Phone Number", style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = phoneNumber,
+                        onValueChange = { phoneNumber = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Phone,
+                            imeAction = ImeAction.Next
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(text = "Email", style = MaterialTheme.typography.labelMedium)
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Switch(
+                            checked = isAdmin,
+                            onCheckedChange = { isAdmin = it },
+                            modifier = Modifier.padding(horizontal = 20.dp)
+                        )
+                        Text(text = "Admin")
+                    }
+                    Button(
+                        onClick =
+                        {
+                            onSaveButtonClicked(
+                                firstName,
+                                lastName,
+                                phoneNumber,
+                                email,
+                                isAdmin
+                            )
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text("Submit")
+                    }
+                }
             }
         }
     }
@@ -179,8 +235,9 @@ fun AddNewEmployeeScreen(
 fun AddNewEmployeeScreenPreview() {
     PreviewScreen {
         AddNewEmployeeScreen(
-            viewModelState = MutableStateFlow(AddNewEmployeeState()),
-            onSaveButtonClicked = { _, _, _, _, _ -> }
+            viewStateFlow = MutableStateFlow(AddNewEmployeeState()),
+            onSaveButtonClicked = { _, _, _, _, _ -> },
+            onDismissAlertDialog = {}
         )
     }
 }

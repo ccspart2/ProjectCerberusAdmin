@@ -2,7 +2,7 @@ package com.ccspart2.projectcerberusadmincompose.presentation.routes.addNewEmplo
 
 sealed class AddNewEmployeeEvent {
 
-    class onSaveButtonClicked(
+    data class OnSaveButtonClicked(
         val firstName: String,
         val lastName: String,
         val phoneNumber: String,

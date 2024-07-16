@@ -4,11 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccspart2.projectcerberusadmincompose.data.model.Employee
 import com.ccspart2.projectcerberusadmincompose.domain.EmployeesUseCases
-import com.ccspart2.projectcerberusadmincompose.utils.LogUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -18,15 +18,13 @@ class AddNewEmployeeViewModel @Inject constructor(
     private val _viewState = MutableStateFlow(AddNewEmployeeState())
     val viewState = _viewState.asStateFlow()
 
-    init {}
-
     fun handleEvent(event: AddNewEmployeeEvent) {
         when (event) {
-            is AddNewEmployeeEvent.onSaveButtonClicked -> checkInformation(event)
+            is AddNewEmployeeEvent.OnSaveButtonClicked -> checkInformation(event)
         }
     }
 
-    private fun checkInformation(event: AddNewEmployeeEvent.onSaveButtonClicked) {
+    private fun checkInformation(event: AddNewEmployeeEvent.OnSaveButtonClicked) {
         viewModelScope.launch {
             employeesUseCases.addData(
                 Employee(
@@ -37,10 +35,18 @@ class AddNewEmployeeViewModel @Inject constructor(
                     isAdmin = event.isAdmin
                 ),
                 onSuccess = {
-                    LogUtils.info("The Message was sent!")
+                    _viewState.update { state ->
+                        state.copy(
+                            employeeUploadState = EmployeeUploadState.SUCCESS
+                        )
+                    }
                 },
                 onError = {
-                    // TODO Add Error Handling
+                    _viewState.update { state ->
+                        state.copy(
+                            employeeUploadState = EmployeeUploadState.ERROR
+                        )
+                    }
                 }
             )
         }
