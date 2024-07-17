@@ -11,15 +11,15 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 interface EmployeeDataSource {
-    fun getData(): Flow<List<Employee>>
-    suspend fun addData(model: Employee)
+    fun getAllEmployees(): Flow<List<Employee>>
+    suspend fun addEmployee(employee: Employee)
 }
 
 class EmployeeDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : EmployeeDataSource {
 
-    override fun getData(): Flow<List<Employee>> = flow {
+    override fun getAllEmployees(): Flow<List<Employee>> = flow {
         val snapshot = firestore.collection("employees")
             .get()
             .await()
@@ -29,10 +29,12 @@ class EmployeeDataSourceImpl @Inject constructor(
         emit(data)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun addData(model: Employee) {
+    override suspend fun addEmployee(employee: Employee) {
         withContext(Dispatchers.IO) {
-            firestore.collection("employees")
-                .add(model)
+            val newDocRef = firestore.collection("employees").document()
+            val updatedModel = employee.copy(id = newDocRef.id)
+
+            newDocRef.set(updatedModel)
                 .await()
         }
     }

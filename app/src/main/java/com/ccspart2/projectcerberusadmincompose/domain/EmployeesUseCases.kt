@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.flow
 class EmployeesUseCases @Inject constructor(
     private val repository: EmployeesRepository
 ) {
-    fun getData(
+    fun getAllEmployees(
         onSuccess: (List<Employee>) -> Unit,
         onError: (Exception) -> Unit
     ): Flow<Unit> = flow {
         try {
-            repository.getData().collect { data ->
-                onSuccess(data)
+            repository.getAllEmployees().collect { response ->
+                onSuccess(response)
                 emit(Unit)
             }
         } catch (e: Exception) {
@@ -24,13 +24,14 @@ class EmployeesUseCases @Inject constructor(
         }
     }
 
-    suspend fun addData(
-        employeeModel: Employee,
+    suspend fun addEmployee(
+        employee: Employee,
         onSuccess: () -> Unit,
         onError: (Exception) -> Unit
     ) {
         try {
-            repository.addData(employeeModel)
+            repository.addEmployee(employee)
+            LogUtils.error("The Network call was successful", "EmployeesUseCases")
             onSuccess()
         } catch (e: Exception) {
             LogUtils.error("Network Exception: $e", "EmployeesUseCases")
