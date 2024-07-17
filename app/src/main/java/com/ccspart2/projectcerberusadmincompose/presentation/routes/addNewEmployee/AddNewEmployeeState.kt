@@ -9,5 +9,7 @@ data class AddNewEmployeeState(
 enum class EmployeeUploadState {
     PENDING,
     SUCCESS,
-    ERROR
+    ERROR,
+    INVALID_INPUT,
+    LOADING
 }

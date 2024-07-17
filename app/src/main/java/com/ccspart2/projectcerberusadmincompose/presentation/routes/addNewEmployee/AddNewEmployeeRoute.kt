@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.dialogs.LoadingDialog
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,6 +64,9 @@ fun AddNewEmployeeRoute(navController: NavController) {
         },
         onDismissAlertDialog = {
             navController.popBackStack()
+        },
+        onInputValidationConfirmButtonCLicked = {
+            viewModel.handleEvent(AddNewEmployeeEvent.OnInputValidationConfirmButtonCLicked)
         }
 
     )
@@ -73,7 +77,8 @@ fun AddNewEmployeeRoute(navController: NavController) {
 fun AddNewEmployeeScreen(
     viewStateFlow: StateFlow<AddNewEmployeeState>,
     onSaveButtonClicked: (String, String, String, String, Boolean) -> Unit,
-    onDismissAlertDialog: () -> Unit
+    onDismissAlertDialog: () -> Unit,
+    onInputValidationConfirmButtonCLicked: () -> Unit
 ) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -99,11 +104,6 @@ fun AddNewEmployeeScreen(
             .imePadding()
 
     ) {
-        MainTopBar(
-            title = "Add Employee",
-            onActionClick = {}
-        )
-
         when (viewState.employeeUploadState) {
             EmployeeUploadState.SUCCESS -> {
                 AlertDialog(
@@ -148,6 +148,10 @@ fun AddNewEmployeeScreen(
             }
 
             EmployeeUploadState.PENDING -> {
+                MainTopBar(
+                    title = "Add Employee",
+                    onActionClick = {}
+                )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -226,6 +230,44 @@ fun AddNewEmployeeScreen(
                     }
                 }
             }
+
+            EmployeeUploadState.INVALID_INPUT -> {
+                AlertDialog(
+                    title = {
+                        Text(text = "Invalid Input")
+                    },
+                    text = {
+                        Text(
+                            text = " One or more provided fields are invalid. Please try again."
+                        )
+                    },
+                    onDismissRequest = {},
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                firstName = ""
+                                lastName = ""
+                                phoneNumber = ""
+                                email = ""
+                                onInputValidationConfirmButtonCLicked()
+                            }
+                        ) {
+                            Text("Ok")
+                        }
+                    }
+                )
+            }
+
+            EmployeeUploadState.LOADING -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    LoadingDialog()
+                }
+            }
         }
     }
 }
@@ -235,9 +277,14 @@ fun AddNewEmployeeScreen(
 fun AddNewEmployeeScreenPreview() {
     PreviewScreen {
         AddNewEmployeeScreen(
-            viewStateFlow = MutableStateFlow(AddNewEmployeeState()),
+            viewStateFlow = MutableStateFlow(
+                AddNewEmployeeState(
+                    employeeUploadState = EmployeeUploadState.PENDING
+                )
+            ),
             onSaveButtonClicked = { _, _, _, _, _ -> },
-            onDismissAlertDialog = {}
+            onDismissAlertDialog = {},
+            onInputValidationConfirmButtonCLicked = {}
         )
     }
 }

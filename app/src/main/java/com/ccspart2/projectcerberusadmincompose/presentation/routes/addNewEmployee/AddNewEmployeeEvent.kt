@@ -9,4 +9,6 @@ sealed class AddNewEmployeeEvent {
         val email: String,
         val isAdmin: Boolean
     ) : AddNewEmployeeEvent()
+
+    object OnInputValidationConfirmButtonCLicked : AddNewEmployeeEvent()
 }
