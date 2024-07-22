@@ -37,12 +37,12 @@ fun LoadingDialog(
             verticalArrangement = Arrangement.Center
         ) {
             CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = "Loading",
                 color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier
                     .padding(vertical = 8.dp)
             )
