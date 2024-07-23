@@ -41,6 +41,7 @@ fun SeeAllEmployeesRoute(navController: NavController) {
         },
         onSelectEmployeeClick = { employeeID ->
             LogUtils.info("The Selected Employee is: $employeeID")
+            navController.navigate(Screen.EmployeeDetail.createRoute(employeeID))
         }
     )
 }
