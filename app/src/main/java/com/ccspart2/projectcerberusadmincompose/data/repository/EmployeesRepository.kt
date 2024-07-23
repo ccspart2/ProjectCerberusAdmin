@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface EmployeesRepository {
     fun getAllEmployees(): Flow<List<Employee>>
     suspend fun addEmployee(employee: Employee)
+
+    suspend fun getEmployeeById(employeeId: String): Employee?
 }
 
 class EmployeeRepositoryImpl @Inject constructor(
@@ -20,5 +22,9 @@ class EmployeeRepositoryImpl @Inject constructor(
 
     override suspend fun addEmployee(employee: Employee) {
         dataSource.addEmployee(employee)
+    }
+
+    override suspend fun getEmployeeById(employeeId: String): Employee? {
+        return dataSource.getEmployeeById(employeeId)
     }
 }

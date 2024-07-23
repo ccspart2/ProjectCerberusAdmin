@@ -1,5 +1,6 @@
 package com.ccspart2.projectcerberusadmincompose.data.source
 
+import com.ccspart2.projectcerberusadmincompose.data.model.Definitions.FirebaseCollectionLabels.EMPLOYEES
 import com.ccspart2.projectcerberusadmincompose.data.model.Employee
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
@@ -13,6 +14,8 @@ import kotlinx.coroutines.withContext
 interface EmployeeDataSource {
     fun getAllEmployees(): Flow<List<Employee>>
     suspend fun addEmployee(employee: Employee)
+
+    suspend fun getEmployeeById(employeeId: String): Employee?
 }
 
 class EmployeeDataSourceImpl @Inject constructor(
@@ -20,7 +23,7 @@ class EmployeeDataSourceImpl @Inject constructor(
 ) : EmployeeDataSource {
 
     override fun getAllEmployees(): Flow<List<Employee>> = flow {
-        val snapshot = firestore.collection("employees")
+        val snapshot = firestore.collection(EMPLOYEES.label)
             .get()
             .await()
         val data = snapshot.documents.map { document ->
@@ -31,11 +34,21 @@ class EmployeeDataSourceImpl @Inject constructor(
 
     override suspend fun addEmployee(employee: Employee) {
         withContext(Dispatchers.IO) {
-            val newDocRef = firestore.collection("employees").document()
+            val newDocRef = firestore.collection(EMPLOYEES.label).document()
             val updatedModel = employee.copy(id = newDocRef.id)
 
             newDocRef.set(updatedModel)
                 .await()
+        }
+    }
+
+    override suspend fun getEmployeeById(employeeId: String): Employee? {
+        return withContext(Dispatchers.IO) {
+            val document = firestore.collection(EMPLOYEES.label)
+                .document(employeeId)
+                .get()
+                .await()
+            document.toObject(Employee::class.java)?.copy(id = document.id)
         }
     }
 }

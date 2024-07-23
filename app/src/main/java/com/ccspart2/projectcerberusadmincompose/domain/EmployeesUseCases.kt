@@ -38,4 +38,17 @@ class EmployeesUseCases @Inject constructor(
             onError(e)
         }
     }
+
+    suspend fun getEmployeeById(
+        employeeId: String,
+        onSuccess: (Employee?) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        try {
+            val employeeResponse = repository.getEmployeeById(employeeId = employeeId)
+            onSuccess(employeeResponse)
+        } catch (e: Exception) {
+            onFailure(e)
+        }
+    }
 }
