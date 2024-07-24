@@ -5,7 +5,7 @@ sealed class Screen(val route: String) {
     object SeeAllEmployees : Screen("seeAllEmployees")
     object AddNewEmployee : Screen("addNewEmployee")
 
-    object EmployeeDetail : Screen("employeeDetail/{employeeId}") {
+    object EmployeeDetail : Screen("employeeDetail/{${ArgumentDefinitions.EMPLOYEE_ID.path}}") {
         fun createRoute(employeeId: String) = "employeeDetail/$employeeId"
     }
 }

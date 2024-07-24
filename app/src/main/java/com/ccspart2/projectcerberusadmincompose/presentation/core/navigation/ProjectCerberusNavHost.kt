@@ -29,10 +29,13 @@ fun ProjectCerberusNavHost() {
         }
         composable(
             route = Screen.EmployeeDetail.route,
-            arguments = listOf(navArgument("employeeId") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val employeeId = backStackEntry.arguments?.getString("employeeId")
-            EmployeeDetailsRoute(navController = navController, employeeId = employeeId)
+            arguments = listOf(
+                navArgument(ArgumentDefinitions.EMPLOYEE_ID.path) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            EmployeeDetailsRoute(navController = navController)
         }
     }
 }
