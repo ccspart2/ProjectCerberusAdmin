@@ -18,22 +18,4 @@ class HomeViewModel @Inject constructor(
 
     private val _data = MutableStateFlow<List<Employee>>(emptyList())
     val data: StateFlow<List<Employee>> get() = _data
-
-    init {
-//        LogUtils.info("Entro!!")
-//
-//        viewModelScope.launch {
-//            getDataUseCase().collect { list ->
-//                _data.value = list
-//            }
-//        }
-
-//        viewModelScope.launch {
-//            addDataUseCase(
-//                FirestoreModel(
-//                    name = "Chardoro"
-//                )
-//            )
-//        }
-    }
 }
