@@ -12,4 +12,10 @@ sealed class EmployeeDetailsEvent {
     ) : EmployeeDetailsEvent()
 
     object OnInvalidInputDismiss : EmployeeDetailsEvent()
+
+    object OnDisplayDeleteDialog : EmployeeDetailsEvent()
+
+    object OnConfirmDeleteDialog : EmployeeDetailsEvent()
+
+    object OnDismissDeleteDialog : EmployeeDetailsEvent()
 }
