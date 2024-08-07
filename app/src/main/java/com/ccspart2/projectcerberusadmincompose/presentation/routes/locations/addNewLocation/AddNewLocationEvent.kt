@@ -7,4 +7,7 @@ sealed class AddNewLocationEvent {
         val positions: Int,
         val suggestedCount: Int,
     ) : AddNewLocationEvent()
+
+    object OnInvalidInputConfirmButtonClicked : AddNewLocationEvent()
+
 }
