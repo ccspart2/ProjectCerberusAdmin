@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.employeeDetails
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.employeeDetails
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +34,7 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Scr
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.dialogs.LoadingDialog
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
-import com.ccspart2.projectcerberusadmincompose.presentation.routes.employeeDetails.components.EmployeeEditDialog
+import com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.employeeDetails.components.EmployeeEditDialog
 import com.ccspart2.projectcerberusadmincompose.ui.theme.ProjectCerberusAdminComposeTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

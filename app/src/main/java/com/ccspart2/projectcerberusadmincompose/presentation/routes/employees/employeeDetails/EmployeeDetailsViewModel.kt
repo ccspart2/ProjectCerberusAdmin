@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.employeeDetails
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.employeeDetails
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -9,11 +9,11 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Arg
 import com.ccspart2.projectcerberusadmincompose.utils.InputValidator
 import com.ccspart2.projectcerberusadmincompose.utils.LogUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class EmployeeDetailsViewModel

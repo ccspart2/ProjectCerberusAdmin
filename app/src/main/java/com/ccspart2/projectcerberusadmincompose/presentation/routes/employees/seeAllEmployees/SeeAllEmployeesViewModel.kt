@@ -1,8 +1,9 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.seeAllEmployees
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.seeAllEmployees
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccspart2.projectcerberusadmincompose.domain.EmployeesUseCases
+import com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.seeAllEmployees.SeeAllEmployeesState
 import com.ccspart2.projectcerberusadmincompose.utils.LogUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

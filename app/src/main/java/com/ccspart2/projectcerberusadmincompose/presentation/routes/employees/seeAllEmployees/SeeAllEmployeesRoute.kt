@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.seeAllEmployees
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.seeAllEmployees
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

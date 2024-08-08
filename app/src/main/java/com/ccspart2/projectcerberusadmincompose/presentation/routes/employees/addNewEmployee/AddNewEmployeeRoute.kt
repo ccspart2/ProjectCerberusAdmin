@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.addNewEmployee
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.addNewEmployee
 
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Arrangement

@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.employeeDetails
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.employeeDetails
 
 import com.ccspart2.projectcerberusadmincompose.data.model.Employee
 

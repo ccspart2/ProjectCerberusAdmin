@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.addNewEmployee
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.addNewEmployee
 
 data class AddNewEmployeeState(
     val employeeUploadState: EmployeeUploadState = EmployeeUploadState.PENDING

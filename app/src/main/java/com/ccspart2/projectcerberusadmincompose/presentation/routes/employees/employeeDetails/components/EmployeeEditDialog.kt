@@ -1,4 +1,4 @@
-package com.ccspart2.projectcerberusadmincompose.presentation.routes.employeeDetails.components
+package com.ccspart2.projectcerberusadmincompose.presentation.routes.employees.employeeDetails.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
