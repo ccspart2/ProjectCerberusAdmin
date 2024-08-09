@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.ccspart2.projectcerberusadmincompose.presentation.core.navigation.Screen
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.dialogs.LoadingDialog
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.topbars.MainTopBar
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
@@ -63,7 +64,11 @@ fun AddNewLocationRoute(navController: NavHostController) {
         onInvalidInputConfirmButtonClicked = {
             viewModel.handleEvent(AddNewLocationEvent.OnInvalidInputConfirmButtonClicked)
         },
-        onDismissAlertDialog = { navController.popBackStack() })
+        onDismissAlertDialog = {
+            navController.navigate(Screen.SeeAllLocations.route) {
+                popUpTo(Screen.SeeAllLocations.route) { inclusive = true }
+            }
+        })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,6 +1,5 @@
 package com.ccspart2.projectcerberusadmincompose.presentation.routes.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,103 +28,69 @@ import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.components.
 import com.ccspart2.projectcerberusadmincompose.presentation.core.ui.preview.PreviewScreen
 
 @Composable
-fun HomeRoute(
-    navController: NavController
-) {
+fun HomeRoute(navController: NavController) {
     val viewModel: HomeViewModel = hiltViewModel()
 
     HomeScreen(
-        onEmployeesClick = {
-            navController.navigate(Screen.SeeAllEmployees.route)
-        }
-    )
+        onEmployeesClick = { navController.navigate(Screen.SeeAllEmployees.route) },
+        onLocationsClick = { navController.navigate(Screen.SeeAllLocations.route) })
 }
 
 @Composable
 private fun HomeScreen(
-    onEmployeesClick: () -> Unit
+    onEmployeesClick: () -> Unit,
+    onLocationsClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         MainTopBar()
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 25.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 75.dp
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.clickable {
-                        onEmployeesClick()
+            modifier = Modifier.fillMaxSize().padding(horizontal = 25.dp),
+            verticalArrangement = Arrangement.Center) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 75.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.clickable { onEmployeesClick() }) {
+                                Icon(
+                                    painter =
+                                        painterResource(id = R.drawable.outline_people_alt_24),
+                                    contentDescription = "",
+                                    modifier = Modifier.size(150.dp),
+                                    tint = MaterialTheme.colorScheme.primary)
+                                Text(
+                                    text = "Employees", style = MaterialTheme.typography.titleLarge)
+                            }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.clickable {}) {
+                                Icon(
+                                    painter =
+                                        painterResource(id = R.drawable.outline_calendar_month_24),
+                                    contentDescription = "",
+                                    modifier = Modifier.size(150.dp),
+                                    tint = MaterialTheme.colorScheme.primary)
+                                Text(text = "Events", style = MaterialTheme.typography.titleLarge)
+                            }
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                            modifier = Modifier.clickable { onLocationsClick() }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.outline_place_24),
+                                    contentDescription = "",
+                                    modifier = Modifier.size(150.dp),
+                                    tint = MaterialTheme.colorScheme.primary)
+                                Text(
+                                    text = "Locations", style = MaterialTheme.typography.titleLarge)
+                            }
                     }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_people_alt_24),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(150.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Employees",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.clickable {
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_calendar_month_24),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(150.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Events",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.clickable {
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.outline_place_24),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(150.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = "Locations",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
+
+                Spacer(modifier = Modifier.height(80.dp))
             }
-
-            Spacer(modifier = Modifier.height(80.dp))
-        }
-
     }
 }
 
@@ -134,7 +99,8 @@ private fun HomeScreen(
 private fun HomeScreenPreview() {
     PreviewScreen {
         HomeScreen(
-            onEmployeesClick = {}
+            onEmployeesClick = {},
+            onLocationsClick = {},
         )
     }
 }
